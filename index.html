@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        var clearInput = function(){
+            $('#city').val('');
+        };
+
+        $(document).ready(function(){
+            var key="3a06c1d4a65de6ffe64a5820d79996c4";
+            var link="api.openweathermap.org/data/2.5/forecast?id=524901&APPID="
+
+            $(document).on('click', '#submit', function(){
+                $('#city').empty();
+                $('#output').empty();
+                var city = $('#city').val();
+                var fahrenheit;
+
+            $.get("http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=3a06c1d4a65de6ffe64a5820d79996c4", function(res) {
+                console.log(res);
+                console.log(res.name);
+                
+                // $.ajax({                        
+                //     error:function (xhr, ajaxOptions, thrownError){
+                //         if(xhr.status==404) {
+                //             alert(thrownError);
+                //         }
+                //     }
+                // });
+
+                fahrenheit = Math.floor((9/5*(res.main.temp - 273)+32));
+                $('#output').append('<h1>'+res.name+'</h1><p>Temperature : '+fahrenheit+' °F</p>');
+
+            }, 'json');
+
+            return false;
+            clearInput();
+            });            
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <form action="test.php" id="form">
+            <input type="text" id="city">
+            <input type="submit" id="submit" value="Search Weather">
+            <div id="output">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
