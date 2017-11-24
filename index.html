@@ -14,33 +14,27 @@
 
         $(document).ready(function(){
             var key="3a06c1d4a65de6ffe64a5820d79996c4";
-            var link="api.openweathermap.org/data/2.5/forecast?id=524901&APPID="
+            var link="http://api.openweathermap.org/data/2.5/weather?q="
 
-            $(document).on('click', '#submit', function(){
-                $('#city').empty();
+            $(document).on('click', '#submit', function(e){
+                e.preventDefault();
                 $('#output').empty();
                 var city = $('#city').val();
                 var fahrenheit;
 
-            $.get("http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=3a06c1d4a65de6ffe64a5820d79996c4", function(res) {
+            $.get(link+city+"&appid="+key, function(res) {
                 console.log(res);
                 console.log(res.name);
-                
-                // $.ajax({                        
-                //     error:function (xhr, ajaxOptions, thrownError){
-                //         if(xhr.status==404) {
-                //             alert(thrownError);
-                //         }
-                //     }
-                // });
 
                 fahrenheit = Math.floor((9/5*(res.main.temp - 273)+32));
                 $('#output').append('<h1>'+res.name+'</h1><p>Temperature : '+fahrenheit+' °F</p>');
 
-            }, 'json');
-
-            return false;
+            }, 'json')
+            .fail(function(error){
+             alert(error.responseJSON.message );
+            });
             clearInput();
+            return false;
             });            
         });
     </script>
